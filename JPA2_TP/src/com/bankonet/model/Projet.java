@@ -2,22 +2,26 @@ package com.bankonet.model;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.*;
 
 @Entity 
 
-public class Projet extends Participation implements Serializable{
+public class Projet  implements Serializable{
 	@Id @GeneratedValue
   private int id;
   private String nom;
-  @OneToMany
-  private Participation participation;
-	
-  public Projet(){}
+ @ManyToMany(mappedBy="projets")
+private Collection<Employe> employes = new ArrayList<Employe>();
+ 
+  @OneToMany (mappedBy="projet", cascade=CascadeType.PERSIST)
+  private Collection<Participation> participations= new ArrayList<Participation>();
+
+public Projet(){}
   
-  public Projet(int id,String nom){
-	  this.id = id;
+  public Projet(String nom){
 	  this.nom = nom;
   }
   
@@ -33,7 +37,26 @@ public class Projet extends Participation implements Serializable{
     this.nom = nom;
   }
   
-  public void ajouterParticipant(Employe employe, String fonction){
-	  participation = new Participation(employe,fonction);
+ public Collection<Employe> getEmployes() {
+		return employes;
+	}
+
+	public void setEmployes(Collection<Employe> employes) {
+		this.employes = employes;
+	}
+  
+	public Collection<Participation> getParticipations() {
+		return participations;
+	}
+
+	public void setParticipations(Collection<Participation> participations) {
+		this.participations = participations;
+	}
+
+	
+ public void ajouterParticipant(Employe employe, String fonction){
+	 Participation participation = new Participation(fonction,this,employe);
+	 employe.getParticipations().add(participation);
+	 this.getParticipations().add(participation);
   }
 }

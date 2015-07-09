@@ -42,6 +42,23 @@ public class Test2 {
       dept1.addEmploye(emp1);
       dept1.addEmploye(emp3);
       dept2.addEmploye(emp3);
+      
+      //Création de 3 projets
+      Projet projet1 = new Projet("projet1");
+      Projet projet2 = new Projet("projet2");
+      Projet projet3 = new Projet("projet3");
+      
+      em.persist(projet1);
+      em.persist(projet2);
+      em.persist(projet3);
+      
+      emp1.addProjet(projet1);
+      emp1.addProjet(projet2);
+      emp2.addProjet(projet1);
+      emp2.addProjet(projet3);
+      emp3.addProjet(projet2);
+ 
+
       tx.commit();
     }
     catch(Exception e) {
